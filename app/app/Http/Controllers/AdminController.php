@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 use App\Post;
 use Illuminate\Support\Facades\Auth;
-use App\User;
-use App\Admin;
-use App\Like;
 
-class UserController extends Controller
+
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,20 +17,13 @@ class UserController extends Controller
      */
     public function index()
     {
-        $posts = Post::where('user_id', Auth::user()->id)->get();
-        return view('users.my_page',[
-            'posts' => $posts,
+        if(Auth::user()->role == 0){
+            return redirect('posts');
+        }
+        $users = User::all();
+        return view('admins.index',[
+            'users' => $users
         ]);
-        
-    }
-
-    public function likeIndex()
-    {
-        $likes = Like::select('likes.post_id', 'posts.id', 'posts.user_id', 'posts.title', 'posts.body', 'posts.image')->join('posts', 'likes.post_id', '=', 'posts.id')->where('posts.user_id', Auth::user()->id)->get();
-        return view('users.like_page',[
-            'posts' => $likes
-        ]);
-        
     }
 
     /**
@@ -63,11 +55,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $posts = Post::where('user_id', $id)->get();
-        $user = User::find($id);
-        return view('users.show',[
-            'posts' => $posts,
-            'user' => $user
+        if(Auth::user()->role == 0){
+            return redirect('posts');
+        }
+        $posts =Post::where('user_id', $id)->get();
+        return view('admins.show',[
+            'posts' => $posts
         ]);
     }
 
@@ -79,7 +72,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('users.user_edit');
+        //
     }
 
     /**
@@ -91,22 +84,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::find($id);
-        if (auth()->user()->id !=Auth::user()->id) {
-            return redirect(route('users.index'));
-        }
-        if(request()->file('icon') != null){
-            $icon = request()->file('icon');
-            request()->file('icon')->storeAs('', $icon, 'public');
-            $user->icon = $icon;
-            }
-
-        $user->name = $request->name;
-        $user->profile = $request->profile;
-        $user->save();
-
-        return redirect(route('users.index'));
-
+        //
     }
 
     /**
@@ -117,8 +95,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find($id);
-        $user->delete();
-            return redirect()->route('admins.index');
+        if(Auth::user()->role == 0){
+            return redirect('posts');
+        }
+        $post = Post::find($id);
+        $post->delete();
+        return redirect(route('admins.index'));
     }
 }
