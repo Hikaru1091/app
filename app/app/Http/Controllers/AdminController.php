@@ -20,7 +20,7 @@ class AdminController extends Controller
         if(Auth::user()->role == 0){
             return redirect('posts');
         }
-        $users = User::all();
+        $users = User::where('role', 0)->get();
         return view('admins.index',[
             'users' => $users
         ]);
@@ -53,15 +53,34 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         if(Auth::user()->role == 0){
             return redirect('posts');
         }
-        $posts =Post::where('user_id', $id)->get();
+        $posts = Post::where('user_id', $id)->get();
+        $search = $request->input('search');
+
+        $query = Post::where('user_id', $id);
+
+        if ($search){
+            $spaceConversion = mb_convert_kana($search, 's');
+
+            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+            foreach($wordArraySearched as $value){
+                $query->where('title', 'like', '%'.$value.'%')
+                    ->orWhere('body', 'like', '%'.$value.'%');
+            }
+            $posts = $query->get();
+        }
+
         return view('admins.show',[
-            'posts' => $posts
+            'posts' => $posts,
+            'search' => $search,
+            'id' => $id
         ]);
+        
     }
 
     /**

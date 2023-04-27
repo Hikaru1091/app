@@ -27,7 +27,7 @@ class UserController extends Controller
 
     public function likeIndex()
     {
-        $likes = Like::select('likes.post_id', 'posts.id', 'posts.user_id', 'posts.title', 'posts.body', 'posts.image')->join('posts', 'likes.post_id', '=', 'posts.id')->where('posts.user_id', Auth::user()->id)->get();
+        $likes = Like::select('likes.post_id', 'posts.id', 'posts.user_id', 'posts.title', 'posts.body', 'posts.image')->join('posts', 'likes.post_id', '=', 'posts.id')->where('likes.user_id', Auth::user()->id)->get();
         return view('users.like_page',[
             'posts' => $likes
         ]);

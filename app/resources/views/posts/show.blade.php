@@ -10,6 +10,12 @@
                 @method('delete')
                 <input type="submit" value="削除" class="btn btn-danger p-2 bd-highlight" onclick='return confirm("削除しますか");'>
             </form>
+            @elseif (!Auth::guest() && Auth::user()->role == 1)
+            <form action="{{route('posts.destroy', $post->id)}}" method="post" class="">
+                @csrf
+                @method('delete')
+                <input type="submit" value="削除" class="btn btn-danger p-2 bd-highlight" onclick='return confirm("削除しますか");'>
+            </form>
             @endif
 
         </div>
@@ -22,7 +28,7 @@
         <div class="row justify-content-center">
             <div class="col">
                 <div class="card">
-                    <div class="card-body">{{ $post->title }}</div>
+                    <div class="card-body">タイトル：{{ $post->title }}</div>
                 </div>        
             </div>
         </div>
@@ -31,7 +37,7 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                    <a href="{{ route('users.show', $post->user->id)}}" class="card-link">{{ $post->user->name }}</a>
+                    <a href="{{ route('users.show', $post->user->id)}}" class="card-link">投稿者：{{ $post->user->name }}</a>
                     </div>
                 </div>        
             </div>

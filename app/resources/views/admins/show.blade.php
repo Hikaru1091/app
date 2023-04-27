@@ -2,6 +2,18 @@
 
 @section('content')
 <div class="container">
+    <form method="GET" action="{{ route('admins.show', $id) }}">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="input-group mb-3">
+                            <input type="search" class="form-control" placeholder="検索" name="search" value="@if (isset($search)) {{ $search }} @endif">
+                            <button type="submit" class="input-group-text">検索</button>
+                            <button class="input-group-text"><a href="{{ route('admins.show', $id) }}" class="text">クリア</a></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <table class="table">
@@ -15,7 +27,7 @@
                 @foreach($posts as $post)
                 <tbody>
                     <tr>
-                        <a href="{{ route('posts.show', $post->id) }}"><th scope="row">{{ $post->id }}</th></a>
+                        <td scope="row"><a href="{{ route('posts.show', $post->id) }}">{{ $post->id }}</a></td>
                         <td>{{ $post->title }}</td>
                         <td>{{ $post->body }}</td>
                         <td><form action="{{route('admins.destroy', $post->id)}}" method="post">

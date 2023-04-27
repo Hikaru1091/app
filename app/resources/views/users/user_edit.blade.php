@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">新規登録</div>
+                <div class="card-header">プロフィール編集</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('users.update' , Auth::user()->id) }}" enctype="multipart/form-data">

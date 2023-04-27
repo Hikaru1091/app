@@ -20,9 +20,9 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 </head>
-<body>
+<body style="background:#d3d3d3 !important;">
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav style="background:#87cefa !important;" class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     Pokenote
@@ -42,11 +42,11 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">ログイン</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">新規登録</a>
                                 </li>
                             @endif
                         @else
@@ -56,17 +56,17 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('posts.create') }}">新規投稿</a>
+                                    <a class="dropdown-item" href="{{ route('users.index') }}">マイページ</a>
+                                    @if(Auth::user()->role == 1)
+                                    <a class="dropdown-item" href="{{ route('admins.index') }}">管理者ページ</a>
+                                    @endif
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">ログアウト</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
-                                    <a class="dropdown-item" href="{{ route('posts.create') }}">新規投稿</a>
-                                    <a class="dropdown-item" href="{{ route('users.index') }}">マイページ</a>
-                                    @if(Auth::user()->role == 1)
-                                    <a class="dropdown-item" href="{{ route('admins.index') }}">管理者ページ</a>
-                                    @endif
                                 </div>
                             </li>
                         @endguest

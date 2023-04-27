@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">新規投稿</div>
+                <div class="card-header text-center">新規投稿</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
@@ -47,8 +47,8 @@
                         </div>
 
                         <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">投稿</button>
+                            <div class="col text-center">
+                                <button type="submit" class="btn btn-info text-white">投稿</button>
                             </div>
                         </div>
                     </form>
